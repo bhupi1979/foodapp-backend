@@ -52,14 +52,18 @@ let fooddelete= async(req,res)=>{
  const audiofilePath = path.join('uploads', audiofilename);
  let deletion=true
 //let )
-  fs.unlink(imagefilePath, (err) => {
+if (fs.existsSync(imagefilePath))
+ { fs.unlink(imagefilePath, (err) => {
     if (err) {
       console.error('File deletion error:', err);
       deletion=false
       return res.status(500).json({ message: 'File deletion failed' });
     }
 
-  });
+  })
+}
+if (fs.existsSync(videofilePath))
+ { 
  fs.unlink(videofilePath, (err) => {
     if (err) {
       console.error('File deletion error:', err);
@@ -67,7 +71,10 @@ let fooddelete= async(req,res)=>{
       return res.status(500).json({ message: 'File deletion failed' });
     }
 
-  });
+  })
+}
+if (fs.existsSync(audiofilePath))
+ { 
   fs.unlink(audiofilePath, (err) => {
     if (err) {
       deletion=false
@@ -75,10 +82,11 @@ let fooddelete= async(req,res)=>{
       return res.status(500).json({ message: 'File deletion failed' });
     }
 
-  });
+  })
+}
   if(deletion){ss= await foodtableschema.deleteOne({_id:id})
     res.send({status:1,msg:"data deleted succesfully",data:ss})}
-    else {res.send({status:0,msg:"data not deleted succesfully",data:ss})}
+    
 
 }
 //**********edit api */
