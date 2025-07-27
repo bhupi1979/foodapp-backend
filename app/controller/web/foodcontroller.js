@@ -14,24 +14,26 @@ res.send({status:0,msg:"no data found successfully",data:err})
 let foodinsertdata= async(req,res)=>{
   let imagepath,videopath,audiopath
   const files = req.files
-   if(files.image){
-     await cloudinary1.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
-          if (err) return console.error(err)
-imagepath=result.secure_url
-        }).end(files.image.buffer);
-   }
-   if(files.video){
-     await cloudinary1.uploader.upload_stream({ resource_type: 'video' }, (err, result) => {
-          if (err) return console.error(err)
-videopath=result.secure_url
-        }).end(files.video.buffer);
-   }
-   if(files.image){
-     await cloudinary1.uploader.upload_stream({ resource_type: 'auto' }, (err, result) => {
-          if (err) return console.error(err)
-audiopath=result.secure_url
-        }).end(files.video.buffer);
-   }
+   const uploadToCloudinary = (fileBuffer, resourceType = 'auto') => {
+    return new Promise((resolve, reject) => {
+      cloudinary1.uploader.upload_stream(
+        { resource_type: resourceType },
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result.secure_url);
+        }
+      ).end(fileBuffer);
+    });
+  };
+  if (files.image) {
+      imagepath = await uploadToCloudinary(files.image[0].buffer, 'image');
+    }
+    if (files.video) {
+      videopath = await uploadToCloudinary(files.video[0].buffer, 'video');
+    }
+    if (files.audio) {
+      audiopath = await uploadToCloudinary(files.audio[0].buffer, 'auto'); 
+      }
     let obj=new foodtableschema({
         imagename:req.body.imagename,
         //this is only for uploadin data on local machin
