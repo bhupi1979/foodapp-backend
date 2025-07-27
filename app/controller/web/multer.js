@@ -6,7 +6,7 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 //   destination: (req, file, cb) => cb(null, 'uploads/'),
 //   filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname),
 // });
-console.log('Cloudinary config:', cloudinary1.config());
+///console.log('Cloudinary config:', cloudinary1.config());
 const storage = new CloudinaryStorage({
   cloudinary:cloudinary1,
   params: {

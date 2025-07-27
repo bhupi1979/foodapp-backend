@@ -67,62 +67,68 @@ res.send({status:0,msg:"data not inserted successfully",data:err})
         
     })
 }
+//delet controller 
 let fooddelete= async(req,res)=>{
     let{id}=req.params 
-    let filename
-    let data=await foodtableschema.find({_id:id})
-    if(data.length>0)
-    {
-        console.log(data[0].imageURL)
-        imagefilename=data[0].imageURL
-        console.log(data[0].videoURL)
-        videofilename=data[0].videoURL
-        console.log(data[0].audioURL)
-        audiofilename=data[0].audioURL
-    }
-    else{
-         return res.send("no data found to be deleted")
-    }
-   // const fileName = req.file.filename; // Replace with file name from user/request
- const imagefilePath = path.join('uploads', imagefilename);
- const videofilePath = path.join('uploads', videofilename);
- const audiofilePath = path.join('uploads', audiofilename);
- let deletion=true
-//let )
-if (fs.existsSync(imagefilePath))
- { fs.unlink(imagefilePath, (err) => {
-    if (err) {
-      console.error('File deletion error:', err);
-      deletion=false
-      return res.status(500).json({ message: 'File deletion failed' });
-    }
+    //the under code is required only on localmachine if required
+//     let filename
+//     let data=await foodtableschema.find({_id:id})
+//     if(data.length>0)
+//     {
+//         console.log(data[0].imageURL)
+//         imagefilename=data[0].imageURL
+//         console.log(data[0].videoURL)
+//         videofilename=data[0].videoURL
+//         console.log(data[0].audioURL)
+//         audiofilename=data[0].audioURL
+//     }
+//     else{
+//          return res.send("no data found to be deleted")
+//     }
+//    // const fileName = req.file.filename; // Replace with file name from user/request
+//  const imagefilePath = path.join('uploads', imagefilename);
+//  const videofilePath = path.join('uploads', videofilename);
+//  const audiofilePath = path.join('uploads', audiofilename);
+//  let deletion=true
+// //let )
+// if (fs.existsSync(imagefilePath))
+//  { fs.unlink(imagefilePath, (err) => {
+//     if (err) {
+//       console.error('File deletion error:', err);
+//       deletion=false
+//       return res.status(500).json({ message: 'File deletion failed' });
+//     }
 
-  })
-}
-if (fs.existsSync(videofilePath))
- { 
- fs.unlink(videofilePath, (err) => {
-    if (err) {
-      console.error('File deletion error:', err);
-      deletion=false
-      return res.status(500).json({ message: 'File deletion failed' });
-    }
+//   })
+// }
+// if (fs.existsSync(videofilePath))
+//  { 
+//  fs.unlink(videofilePath, (err) => {
+//     if (err) {
+//       console.error('File deletion error:', err);
+//       deletion=false
+//       return res.status(500).json({ message: 'File deletion failed' });
+//     }
 
-  })
-}
-if (fs.existsSync(audiofilePath))
- { 
-  fs.unlink(audiofilePath, (err) => {
-    if (err) {
-      deletion=false
-      console.error('File deletion error:', err);
-      return res.status(500).json({ message: 'File deletion failed' });
-    }
+//   })
+// }
+// if (fs.existsSync(audiofilePath))
+//  { 
+//   fs.unlink(audiofilePath, (err) => {
+//     if (err) {
+//       deletion=false
+//       console.error('File deletion error:', err);
+//       return res.status(500).json({ message: 'File deletion failed' });
+//     }
 
+//   })
+// }
+  = await foodtableschema.deleteOne({_id:id}).then((res)=>{
+res.send({status:1,msg:"data deleted succesfully",data:res})
+  }).catch((err)=>{
+res.send({status:1,msg:"data did not deleted succesfully",data:err})
   })
-}
-  if(deletion){ss= await foodtableschema.deleteOne({_id:id})
-    res.send({status:1,msg:"data deleted succesfully",data:ss})}
+    
     
 
 }
@@ -149,36 +155,55 @@ let foodupdate= async(req,res)=>{
     else{
          return res.send("no file to be updated")
     }
-  
+  const uploadToCloudinary = (fileBuffer, resourceType = 'auto') => {
+    return new Promise((resolve, reject) => {
+      cloudinary1.uploader.upload_stream(
+        { resource_type: resourceType },
+        (err, result) => {
+          if (err) return reject(err);
+          resolve(result.secure_url);
+        }
+      ).end(fileBuffer)
+    })
+  }
     //const filePath = [path.join('uploads', imagefilename),path.join('uploads',videofilename,path.join('uploads',audiofilename))];
    if(req.files['image']) 
-    {
-      obj.imageURL=req.files['image'][0].filename 
-      fs.unlink(path.join('uploads', imagefilename), (err) => {
-    if (err) {
-      console.error('File deletion error:', err);
-      //return res.status(500).json({ message: 'File deletion failed' });
-    }
-  })
+    { 
+      //this code is used when upload folder is local machin
+      //obj.imageURL=req.files['image'][0].filename 
+  //     fs.unlink(path.join('uploads', imagefilename), (err) => {
+  //   if (err) {
+  //     console.error('File deletion error:', err);
+  //     //return res.status(500).json({ message: 'File deletion failed' });
+  //   }
+  // })
+        obj.imageURL = await uploadToCloudinary(req.files['image'][0].buffer, 'image');
+
     }// Example path
+    
     if(req.files['video'])
-     { obj.videoURL=req.files['video'][0].filename
-      fs.unlink(path.join('uploads', videofilename), (err) => {
-    if (err) {
-      console.error('File deletion error:', err);
-      //return res.status(500).json({ message: 'File deletion failed' });
-    }
-  })
+     { 
+      obj.videoURL = await uploadToCloudinary(req.files['video'][0].buffer, 'video');
+
+      //obj.videoURL=req.files['video'][0].filename
+  //     fs.unlink(path.join('uploads', videofilename), (err) => {
+  //   if (err) {
+  //     console.error('File deletion error:', err);
+  //     //return res.status(500).json({ message: 'File deletion failed' });
+  //   }
+  // })
      }
     if(req.files['audio'])
      {
-       obj.audioURL=req.files['audio'][0].filename
-       fs.unlink(path.join('uploads', audiofilename), (err) => {
-    if (err) {
-      console.error('File deletion error:', err);
-      //return res.status(500).json({ message: 'File deletion failed' });
-    }
-  })
+    obj.audioURL= await uploadToCloudinary(req.files['audio'][0].buffer, 'auto');
+
+  //      obj.audioURL=req.files['audio'][0].filename
+  //      fs.unlink(path.join('uploads', audiofilename), (err) => {
+  //   if (err) {
+  //     console.error('File deletion error:', err);
+  //     //return res.status(500).json({ message: 'File deletion failed' });
+  //   }
+  // })
  
      }
      await foodtableschema.updateOne({_id:id},obj).then(()=>{
