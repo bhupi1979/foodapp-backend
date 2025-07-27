@@ -26,15 +26,17 @@ let foodinsertdata= async(req,res)=>{
     });
   };
   //console.log("this is files image"+files.image)
-  if (files['image'] && files['image'][0] && files['image'][0].buffer) {
+  if (files['image'] && files['image'][0] && files['image'][0].buffer && files['image'][0].buffer.length > 0) {
       imagepath = await uploadToCloudinary(files['image'][0].buffer, 'image');
     }
+    else imagepath=""
     if (files['video'] && files['video'][0] && files['video'][0].buffer) {
       videopath = await uploadToCloudinary(files['video'][0].buffer, 'video');
     }
+    else videopath=""
     if (files['audio'] && files['audio'][0] && files['audio'][0].buffer) {
       audiopath = await uploadToCloudinary(files['audio'][0].buffer, 'video'); 
-      }
+      } else audiopath=""
     let obj=new foodtableschema({
         imagename:req.body.imagename,
         //this is only for uploadin data on local machin
