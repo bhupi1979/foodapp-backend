@@ -1,5 +1,5 @@
 const foodtableschema = require("../../Model/web/foodModel")
-const { cloudinary1 } = require('./cloudinary')
+const cloudinary1=require('./cloudinarynew')
 const fs = require('fs')
 const path = require('path')
 //getting imag data of food

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 require('dotenv').config()
 function Dbconnect(){
 mongoose.connect(process.env.URL)
@@ -6,4 +7,5 @@ mongoose.connect(process.env.URL)
     console.log(err)
   })
 }
+
 module.exports=Dbconnect
