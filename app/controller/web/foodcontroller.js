@@ -25,14 +25,14 @@ let foodinsertdata= async(req,res)=>{
       ).end(fileBuffer);
     });
   };
-  console.log("this is files image"+files.image)
-  if (files.image) {
+  //console.log("this is files image"+files.image)
+  if (files.image && files.image[0] && files.image[0].buffer) {
       imagepath = await uploadToCloudinary(files.image, 'image');
     }
-    if (files.video) {
+    if (files.video && files.video[0] && files.video[0].buffer) {
       videopath = await uploadToCloudinary(files.video, 'video');
     }
-    if (files.audio) {
+    if (files.audio && files.audio[0] && files.audio[0].buffer) {
       audiopath = await uploadToCloudinary(files.audio, 'auto'); 
       }
     let obj=new foodtableschema({
