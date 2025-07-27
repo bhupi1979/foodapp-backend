@@ -13,7 +13,7 @@ res.send({status:0,msg:"no data found successfully",data:err})
 //insetting the food api data
 let foodinsertdata= async(req,res)=>{
   let imagepath,videopath,audiopath
-  const files = req.files
+  
    const uploadToCloudinary = (fileBuffer, resourceType = 'auto') => {
     return new Promise((resolve, reject) => {
       cloudinary1.uploader.upload_stream(
@@ -26,16 +26,16 @@ let foodinsertdata= async(req,res)=>{
     });
   };
   //console.log("this is files image"+files.image)
-  if (files['image'] && files['image'][0] && files['image'][0].buffer && files['image'][0].buffer.length > 0) {
-      imagepath = await uploadToCloudinary(files['image'][0].buffer, 'image');
+  if (req.files['image'] && req.files['image'][0] && req.files['image'][0].buffer && req.files['image'][0].buffer.length > 0) {
+      imagepath = await uploadToCloudinary(req.files['image'][0].buffer, 'image');
     }
     else imagepath=""
-    if (files['video'] && files['video'][0] && files['video'][0].buffer) {
-      videopath = await uploadToCloudinary(files['video'][0].buffer, 'video');
+    if (req.files['video'] && req.files['video'][0] && req.files['video'][0].buffer && req.files['video'][0].buffer.length>0) {
+      videopath = await uploadToCloudinary(req.files['video'][0].buffer, 'video');
     }
     else videopath=""
-    if (files['audio'] && files['audio'][0] && files['audio'][0].buffer) {
-      audiopath = await uploadToCloudinary(files['audio'][0].buffer, 'video'); 
+    if (req.files['audio'] && req.files['audio'][0] && req.files['audio'][0].buffer && req.files['audio'][0].bufferlength>0) {
+      audiopath = await uploadToCloudinary(req.files['audio'][0].buffer, 'video'); 
       } else audiopath=""
     let obj=new foodtableschema({
         imagename:req.body.imagename,
