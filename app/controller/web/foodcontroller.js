@@ -15,19 +15,19 @@ let foodinsertdata= async(req,res)=>{
   let imagepath,videopath,audiopath
   const files = req.files
    if(files.image){
-    const result = await cloudinary1.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
+     await cloudinary1.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
           if (err) return console.error(err)
 imagepath=result.secure_url
         }).end(files.image.buffer);
    }
    if(files.video){
-    const result = await cloudinary1.uploader.upload_stream({ resource_type: 'video' }, (err, result) => {
+     await cloudinary1.uploader.upload_stream({ resource_type: 'video' }, (err, result) => {
           if (err) return console.error(err)
 videopath=result.secure_url
         }).end(files.image.buffer);
    }
    if(files.image){
-    const result = await cloudinary1.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
+     await cloudinary1.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
           if (err) return console.error(err)
 audiopath=result.secure_url
         }).end(files.image.buffer);
