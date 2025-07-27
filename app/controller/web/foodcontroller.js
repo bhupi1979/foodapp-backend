@@ -1,4 +1,5 @@
 const foodtableschema = require("../../Model/web/foodModel")
+const { cloudinary1 } = require('./cloudinary')
 const fs = require('fs')
 const path = require('path')
 //getting imag data of food
@@ -11,13 +12,37 @@ res.send({status:0,msg:"no data found successfully",data:err})
 }
 //insetting the food api data
 let foodinsertdata= async(req,res)=>{
+  let imagepath,videopath,audiopath
+  const files = req.files
+   if(files.image){
+    const result = await cloudinary1.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
+          if (err) return console.error(err)
+imagepath=result.secure_url
+        }).end(files.image.buffer);
+   }
+   if(files.video){
+    const result = await cloudinary1.uploader.upload_stream({ resource_type: 'video' }, (err, result) => {
+          if (err) return console.error(err)
+videopath=result.secure_url
+        }).end(files.image.buffer);
+   }
+   if(files.image){
+    const result = await cloudinary1.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
+          if (err) return console.error(err)
+audiopath=result.secure_url
+        }).end(files.image.buffer);
+   }
     let obj=new foodtableschema({
         imagename:req.body.imagename,
-        imageURL:req.files['image'][0].filename,
+        //this is only for uploadin data on local machin
+        //imageURL:req.files['image'][0].filename,
+        imageURL:imagepath,
          videoname:req.body.videoname,
-        videoURL:req.files['video'][0].filename,
+         videoURL:videopath,
+        //videoURL:req.files['video'][0].filename,
          audioname:req.body.audioname,
-        audioURL:req.files['audio'][0].filename
+         audioURL:audiopath
+        //audioURL:req.files['audio'][0].filename
     })
     console.log(req.body)
     console.log(req.file)
