@@ -24,13 +24,13 @@ imagepath=result.secure_url
      await cloudinary1.uploader.upload_stream({ resource_type: 'video' }, (err, result) => {
           if (err) return console.error(err)
 videopath=result.secure_url
-        }).end(files.image.buffer);
+        }).end(files.video.buffer);
    }
    if(files.image){
-     await cloudinary1.uploader.upload_stream({ resource_type: 'image' }, (err, result) => {
+     await cloudinary1.uploader.upload_stream({ resource_type: 'video' }, (err, result) => {
           if (err) return console.error(err)
 audiopath=result.secure_url
-        }).end(files.image.buffer);
+        }).end(files.video.buffer);
    }
     let obj=new foodtableschema({
         imagename:req.body.imagename,
