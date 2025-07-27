@@ -27,13 +27,13 @@ let foodinsertdata= async(req,res)=>{
   };
   //console.log("this is files image"+files.image)
   if (files['image'] && files['image'][0] && files['image'][0].buffer) {
-      imagepath = await uploadToCloudinary(files.image[0].buffer, 'image');
+      imagepath = await uploadToCloudinary(files['image'][0].buffer, 'image');
     }
     if (files['video'] && files['video'][0] && files['video'][0].buffer) {
-      videopath = await uploadToCloudinary(files.video[0].buffer, 'video');
+      videopath = await uploadToCloudinary(files['video'][0].buffer, 'video');
     }
     if (files['audio'] && files['audio'][0] && files['audio'][0].buffer) {
-      audiopath = await uploadToCloudinary(files.audio[0].buffer, 'video'); 
+      audiopath = await uploadToCloudinary(files['audio'][0].buffer, 'video'); 
       }
     let obj=new foodtableschema({
         imagename:req.body.imagename,
