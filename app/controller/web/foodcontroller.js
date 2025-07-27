@@ -26,13 +26,13 @@ let foodinsertdata= async(req,res)=>{
     });
   };
   if (files.image) {
-      imagepath = await uploadToCloudinary(files.image[0].buffer, 'image');
+      imagepath = await uploadToCloudinary(files.image.buffer, 'image');
     }
     if (files.video) {
-      videopath = await uploadToCloudinary(files.video[0].buffer, 'video');
+      videopath = await uploadToCloudinary(files.video.buffer, 'video');
     }
     if (files.audio) {
-      audiopath = await uploadToCloudinary(files.audio[0].buffer, 'auto'); 
+      audiopath = await uploadToCloudinary(files.audio.buffer, 'auto'); 
       }
     let obj=new foodtableschema({
         imagename:req.body.imagename,
