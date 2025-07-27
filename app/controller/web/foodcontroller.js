@@ -22,22 +22,30 @@ let foodinsertdata= async(req,res)=>{
           if (err) return reject(err);
           resolve(result.secure_url);
         }
-      ).end(fileBuffer);
+      ).end(fileBuffer)
     });
   };
-  //console.log("this is files image"+files.image)
-  if (req.files['image'] && req.files['image'][0] && req.files['image'][0].buffer && req.files['image'][0].buffer.length > 0) {
+  
+  if (req.files['image']?.[0]?.buffer?.length > 0) {
       imagepath = await uploadToCloudinary(req.files['image'][0].buffer, 'image');
     }
-    else imagepath=""
-    if (req.files['video'] && req.files['video'][0] && req.files['video'][0].buffer && req.files['video'][0].buffer.length>0) {
+
+    // Video
+    if (req.files['video']?.[0]?.buffer?.length > 0) {
       videopath = await uploadToCloudinary(req.files['video'][0].buffer, 'video');
     }
-    else videopath=""
-    if (req.files['audio'] && req.files['audio'][0] && req.files['audio'][0].buffer && req.files['audio'][0].bufferlength>0) {
-      audiopath = await uploadToCloudinary(req.files['audio'][0].buffer, 'video'); 
-      } else audiopath=""
-    let obj=new foodtableschema({
+
+    // Audio
+    if (req.files['audio']?.[0]?.buffer?.length > 0) {
+      audiopath = await uploadToCloudinary(req.files['audio'][0].buffer, 'auto');
+    }
+
+    // Debug logs
+    console.log("Uploaded Image URL:", imagepath);
+    console.log("Uploaded Video URL:", videopath);
+    console.log("Uploaded Audio URL:", audiopath);
+    console.log("Form Data:", req.body);
+  let obj=new foodtableschema({
         imagename:req.body.imagename,
         //this is only for uploadin data on local machin
         //imageURL:req.files['image'][0].filename,
@@ -49,8 +57,7 @@ let foodinsertdata= async(req,res)=>{
          audioURL:audiopath
         //audioURL:req.files['audio'][0].filename
     })
-    console.log(req.body)
-    console.log(req.file)
+    
     await obj.save().then((response)=>{
         res.send({status:1,msg:"data inserted successfully",data:response})
         
