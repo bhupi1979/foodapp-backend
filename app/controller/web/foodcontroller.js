@@ -27,7 +27,7 @@ videopath=result.secure_url
         }).end(files.video.buffer);
    }
    if(files.image){
-     await cloudinary1.uploader.upload_stream({ resource_type: 'video' }, (err, result) => {
+     await cloudinary1.uploader.upload_stream({ resource_type: 'auto' }, (err, result) => {
           if (err) return console.error(err)
 audiopath=result.secure_url
         }).end(files.video.buffer);
