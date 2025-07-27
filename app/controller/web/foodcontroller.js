@@ -123,7 +123,7 @@ let fooddelete= async(req,res)=>{
 
 //   })
 // }
-  = await foodtableschema.deleteOne({_id:id}).then((res)=>{
+  await foodtableschema.deleteOne({_id:id}).then((res)=>{
 res.send({status:1,msg:"data deleted succesfully",data:res})
   }).catch((err)=>{
 res.send({status:1,msg:"data did not deleted succesfully",data:err})
